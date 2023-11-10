@@ -1,8 +1,9 @@
 resource "aws_instance" "assignment3" {
-  instance_type = var.instance_type
-  ami           = var.ami
-  key_name      = "stephan"
-  user_data     = <<-EOF
+  instance_type   = var.instance_type
+  ami             = var.ami
+  key_name        = "stephan"
+  security_groups = [aws_security_group.my_security_group.name]
+  user_data       = <<-EOF
                   #!/bin/bash
                   sudo yum update -y
                   sudo yum install -y httpd
@@ -25,5 +26,51 @@ resource "aws_instance" "assignment3" {
                   systemctl start httpd
                   systemctl enable httpd
                   EOF
+  tags = {
+    Name = "TFAssignment3"
+  }
 }
 
+resource "aws_security_group" "my_security_group" {
+  name_prefix = "my-sg-"
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "ssh"
+  }
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "http"
+  }
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "https"
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "all outbound traffic"
+  }
+
+  tags = {
+    Name = "Assignment3SecurityGroup"
+  }
+}
+
+output "public_ip" {
+  value = aws_instance.assignment3.public_ip
+}
