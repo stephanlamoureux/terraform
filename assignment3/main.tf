@@ -4,10 +4,8 @@ resource "aws_instance" "assignment3" {
   key_name      = "stephan"
   user_data     = <<-EOF
                   #!/bin/bash
-                  # update os
-                  yum update -y
-                  # install apache server
-                  yum install -y httpd
+                  sudo yum update -y
+                  sudo yum install -y httpd
                   # get public ip address of ec2 instance using instance metadata
                   TOKEN=`curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600"` \
                   && REGION=`curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/placement/region`
