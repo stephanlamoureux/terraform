@@ -10,6 +10,12 @@ variable "ami" {
   description = "Amazon Linux 2023"
 }
 
+variable "aws_region" {
+  description = "The AWS region where resources will be created"
+  type        = string
+  default     = "eu-central-1"
+}
+
 variable "key_name" {
   type        = string
   default     = "esteban"
