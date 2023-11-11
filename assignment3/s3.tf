@@ -55,5 +55,6 @@ resource "aws_iam_instance_profile" "ec2_s3_profile" {
 
 # Create a new S3 Bucket.
 resource "aws_s3_bucket" "my_bucket" {
-  bucket = var.s3_bucket_name
+  bucket = "${var.s3_bucket_name}-${count.index}"
+  count  = var.num_of_buckets
 }

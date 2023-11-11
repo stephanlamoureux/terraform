@@ -22,6 +22,9 @@ variable "s3_bucket_name" {
   default     = "stephan-tf-assignment3"
 }
 
+variable "num_of_buckets" {
+  default = 2
+}
 variable "iam_role_name" {
   description = "The name of the IAM role for EC2 S3 access"
   type        = string
